@@ -5,23 +5,37 @@ import socket
 import os
 import netifaces ## installed
 import time
+import platform
 
 def getIP():
-    try:
-
-        # Get the appropriate interface names for the current OS
-        interfaces = ['en0', 'en1'] 
-        # Loop through all network interfaces
-        for interface in netifaces.interfaces():
-            if interface in interfaces:
-                # Get the addresses for the interface
-                addresses = netifaces.ifaddresses(interface)
-                # Check if there is an IPv4 address
-                if netifaces.AF_INET in addresses:
-                    # Return the IP address
-                    return addresses[netifaces.AF_INET][0]['addr']
-        return False
-    except:
+    os_name = ""
+    os_type = platform.system()
+    if os_type == "Darwin":
+        os_name = "macOS"
+    elif os_type == "Windows":
+        os_name =  "Windows"
+    
+    if os_name == "macOS":
+        try:
+            # Get the appropriate interface names for the current OS
+            interfaces = ['en0', 'en1']
+            # Loop through all network interfaces
+            for interface in netifaces.interfaces():
+                if interface in interfaces:
+                    # Get the addresses for the interface
+                    addresses = netifaces.ifaddresses(interface)
+                    # Check if there is an IPv4 address
+                    if netifaces.AF_INET in addresses:
+                        # Return the IP address
+                        return addresses[netifaces.AF_INET][0]['addr']
+            return False
+        except:
+            return False
+    else :
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        if local_ip:
+            return local_ip
         return False
 
 stop_receiver = False
@@ -49,7 +63,6 @@ def receiver(host, port):
         while not stop_receiver:
             try:
                 dpg.hide_item("ip_of_sender")
-                dpg.hide_item("file_name")
                 dpg.hide_item("download_info")
                 dpg.show_item("notifier")
                 dpg.set_value("notifier", "Listening for connection...")
@@ -67,10 +80,9 @@ def receiver(host, port):
                 
                 dpg.hide_item("notifier")
                 dpg.show_item("ip_of_sender")
-                dpg.show_item("file_name")
                 dpg.show_item("download_info")
                 dpg.set_value("ip_of_sender",f"IP : {addr[0]}")
-                dpg.set_value("file_name",f"File Name : {file_name}")
+                
                 
                 with open(file_name, 'wb') as file:
                     while not stop_receiver:
@@ -83,7 +95,6 @@ def receiver(host, port):
                 
                 client_socket.close()
                 dpg.hide_item("ip_of_sender")
-                dpg.hide_item("file_name")
                 dpg.hide_item("download_info")
                 dpg.show_item("notifier")
                 dpg.set_value("notifier", f"File {file_name} download complited")
@@ -97,10 +108,8 @@ def receiver(host, port):
 def reciver_thred():
     host = '0.0.0.0'
     port = 12345 
-    if host:
-        threading.Thread(target=receiver, args=(host, port)).start()
-    else:
-        dpg.set_value("ip_address","connect to a same local network")
+    threading.Thread(target=receiver, args=(host, port)).start()
+
 
 ## receive page settings
 def receive_file():
@@ -121,8 +130,7 @@ def receive_file():
         dpg.set_item_pos("notifier", [(width / 2) - 80, (height / 2) - 40])
         
         dpg.set_item_pos("ip_of_sender", [(width / 2) - 80, (height / 2) - 40])
-        dpg.set_item_pos("file_name", [(width / 2) - 80, (height / 2) - 20])
-        dpg.set_item_pos("download_info", [(width / 2) - 80, (height / 2)])
+        dpg.set_item_pos("download_info", [(width / 2) - 80, (height / 2)-20])
         
         
     if not dpg.does_item_exist("resive_window"):
@@ -137,7 +145,6 @@ def receive_file():
             dpg.bind_item_theme("back_button", "button_theme")
             
             dpg.add_text("",tag="ip_of_sender")
-            dpg.add_text("",tag="file_name")
             dpg.add_text("",tag="download_info")
             
               
@@ -147,7 +154,6 @@ def receive_file():
     dpg.show_item("resive_window")
     dpg.hide_item("main_window")
     dpg.hide_item("ip_of_sender")
-    dpg.hide_item("file_name")
     dpg.hide_item("download_info")
     
     

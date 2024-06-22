@@ -3,9 +3,13 @@ import subprocess
 import threading
 import socket
 import os
-import netifaces ## installed
 import time
 import platform
+
+
+
+stop_receiver = False
+stop_searching = False
 
 def getIP():
     os_name = ""
@@ -17,6 +21,7 @@ def getIP():
     
     if os_name == "macOS":
         try:
+            import netifaces ## installed
             # Get the appropriate interface names for the current OS
             interfaces = ['en0', 'en1']
             # Loop through all network interfaces
@@ -29,7 +34,7 @@ def getIP():
                         # Return the IP address
                         return addresses[netifaces.AF_INET][0]['addr']
             return False
-        except:
+        except :
             return False
     else :
         hostname = socket.gethostname()
@@ -37,9 +42,7 @@ def getIP():
         if local_ip:
             return local_ip
         return False
-
-stop_receiver = False
-stop_searching = False
+    
 def resize_and_update_buttons():
     # Get the current viewport width and height
     width, height = dpg.get_viewport_width(), dpg.get_viewport_height()

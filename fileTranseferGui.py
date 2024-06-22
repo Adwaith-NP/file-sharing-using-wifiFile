@@ -76,6 +76,7 @@ def receiver(host, port):
                 
                 file_name_length = int.from_bytes(client_socket.recv(4), 'big')  # Receive filename length
                 file_name = client_socket.recv(file_name_length).decode('utf-8')
+                file_name = "downloads/"+file_name
                 file_size = int.from_bytes(client_socket.recv(8),'big')
                 update_intervel = 1024 * 1024
                 received_byts = 0

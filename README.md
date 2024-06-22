@@ -14,7 +14,7 @@ This README provides all necessary instructions to set up and use the software.
 
 Ensure you have the following installed:
 
-- Python
+- Python 3
 - socket library (comes pre-installed with Python)
 - dearpygui library (pip install dearpygui)
 - if you using mac then you want netifaces (pip install netifaces)

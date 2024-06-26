@@ -14,7 +14,7 @@ This README provides all necessary instructions to set up and use the software.
 
 Ensure you have the following installed:
 
-- Python
+- Python 3
 - socket library (comes pre-installed with Python)
 - dearpygui library (pip install dearpygui)
 - if you using mac then you want netifaces (pip install netifaces)
@@ -37,6 +37,9 @@ Ensure you have the following installed:
 
 - the receive ip will show on the top left side,you can give the ip to sender to send the file
 - all notification will show on middle of the screen
+
+## Downloads Directory
+- There was a Directory called Downloads, every files are store in that directory
 
 
 

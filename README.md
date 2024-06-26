@@ -19,6 +19,9 @@ Ensure you have the following installed:
 - dearpygui library (pip install dearpygui)
 - if you using mac then you want netifaces (pip install netifaces)
 
+## Run
+- Run the fileTranseferGui.py
+
 ## GUI(home page)
 <img width="1080" alt="Screenshot 2024-06-22 at 7 15 33 PM" src="https://github.com/Adwaith-NP/file-sharing-using-wifiFile/assets/144723522/99e9a737-90aa-4220-a9f0-6a6fd5e50c53">
 
@@ -39,7 +42,7 @@ Ensure you have the following installed:
 - all notification will show on middle of the screen
 
 ## Downloads Directory
-- There was a Directory called Downloads, every files are store in that directory
+- The download file will show in downloads directory
 
 
 

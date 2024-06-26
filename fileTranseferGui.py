@@ -5,12 +5,16 @@ import socket
 import os
 import time
 import platform
+from pathlib import Path
 
 
 
 stop_receiver = False
 stop_searching = False
-
+def get_downloas_dir():
+    home_dir = Path.home()
+    downloads_dir = home_dir / 'Downloads'
+    return downloads_dir
 def getIP():
     os_name = ""
     os_type = platform.system()
@@ -76,7 +80,8 @@ def receiver(host, port):
                 
                 file_name_length = int.from_bytes(client_socket.recv(4), 'big')  # Receive filename length
                 file_name = client_socket.recv(file_name_length).decode('utf-8')
-                file_name = "downloads/"+file_name
+                download_directory = get_downloas_dir()
+                file_name = download_directory / file_name
                 file_size = int.from_bytes(client_socket.recv(8),'big')
                 update_intervel = 1024 * 1024
                 received_byts = 0
@@ -104,7 +109,8 @@ def receiver(host, port):
                 dpg.set_value("notifier", f"File {file_name} download complited")
             except socket.timeout:
                 continue
-            except Exception:
+            except Exception as e:
+                print(e)
                 dpg.set_value("notifier", " An error occurred, restart the")
                 break
         server_socket.close()

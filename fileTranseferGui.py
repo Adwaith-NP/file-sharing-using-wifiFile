@@ -236,6 +236,7 @@ def send_file():
                 update_interval = 1024 * 1024
                 file_size_in_bytes  = int(file_size_in_bytes/update_interval)
                 with open(file_path, 'rb') as file:
+                    client_socket.settimeout(20)
                     data = file.read(1024)
                     while data:
                         client_socket.send(data)

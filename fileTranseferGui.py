@@ -111,7 +111,7 @@ def receiver(host, port):
                 continue
             except Exception as e:
                 print(e)
-                dpg.set_value("notifier", " An error occurred, restart the")
+                dpg.set_value("notifier", " An error occurred")
                 break
         server_socket.close()
 
@@ -262,7 +262,9 @@ def send_file():
             return
     
     def file_selection_fun():
-        result = subprocess.run(['python3', 'file_selection.py'], capture_output=True, text=True)
+        directory = os.path.dirname(os.path.abspath(__file__))
+        file_selection_path = os.path.join(directory,'file_selection.py')
+        result = subprocess.run(['python3', file_selection_path], capture_output=True, text=True)
         if result.returncode == 0:
             stdout_output = result.stdout.strip()
             dpg.set_value("path_text", stdout_output) 
@@ -302,7 +304,7 @@ def send_file():
             dpg.add_text("enter ip of receiver",tag="ip_text",pos=(20,60))
             dpg.add_input_text(tag="ip_input",pos=(80,60),width=290)
             dpg.add_button(label="send",tag="sed_button",width=440, height=40,callback=send)
-            dpg.add_button(label="Brows",tag="brows_file",width=120, height=35,callback=file_selection_fun)
+            dpg.add_button(label="Browse",tag="brows_file",width=120, height=35,callback=file_selection_fun)
             dpg.bind_item_theme("back_to_main", "button_theme")
             dpg.bind_item_theme("sed_button", "button_theme")
             dpg.bind_item_theme("brows_file", "button_theme")

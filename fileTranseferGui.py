@@ -297,7 +297,10 @@ def send_file():
         
     if not dpg.does_item_exist("send_window"):
         device_ip = getIP()
-        cut_ip = ".".join(device_ip.split('.')[:-1])+"."
+        if device_ip:
+            cut_ip = ".".join(device_ip.split('.')[:-1])+"."
+        else:
+            cut_ip = ""
         with dpg.window(tag="send_window",label="send the file",pos=(0,0),no_title_bar=True,no_resize=True,no_move=True):
             dpg.add_text("",tag="warning",pos=(25,90))
             dpg.add_text("",tag="upload_info")

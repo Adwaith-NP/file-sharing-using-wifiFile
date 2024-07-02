@@ -296,13 +296,15 @@ def send_file():
         dpg.set_item_pos("sed_button",[(width/2)-210, (height / 2) + 60])
         
     if not dpg.does_item_exist("send_window"):
+        device_ip = getIP()
+        cut_ip = ".".join(device_ip.split('.')[:-1])+"."
         with dpg.window(tag="send_window",label="send the file",pos=(0,0),no_title_bar=True,no_resize=True,no_move=True):
             dpg.add_text("",tag="warning",pos=(25,90))
             dpg.add_text("",tag="upload_info")
             dpg.add_button(label="back",tag="back_to_main",width=120, height=40,pos=(20, 20),callback=show_main_window_for_send)
             dpg.add_button(label="stop",tag="stop_button",width=120, height=40,pos=(20, 20),callback=stop_uploading_of_serching)
             dpg.add_text("enter ip of receiver",tag="ip_text",pos=(20,60))
-            dpg.add_input_text(tag="ip_input",pos=(80,60),width=290)
+            dpg.add_input_text(tag="ip_input",default_value=cut_ip,pos=(80,60),width=290)
             dpg.add_button(label="send",tag="sed_button",width=440, height=40,callback=send)
             dpg.add_button(label="Browse",tag="brows_file",width=120, height=35,callback=file_selection_fun)
             dpg.bind_item_theme("back_to_main", "button_theme")

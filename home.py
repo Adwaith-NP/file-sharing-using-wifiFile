@@ -1,34 +1,35 @@
 import dearpygui.dearpygui as dpg
+from local_home import home
+from font_family.setUpFont import setup
 
-
-from receiver import reciver_thred,receive_file
-from sender import send_file
-from subpart import resize_and_update_buttons
-
-
-
-def call_or_not():
-    global stop_receiver
-    if dpg.does_item_exist("resive_window"):
-        stop_receiver = False
-        reciver_thred()
-        dpg.show_item("resive_window")
+def resize():
+    # Get the current viewport width and height
+    width, height = dpg.get_viewport_width(), dpg.get_viewport_height()
+    
+    # Resize the window to match the viewport size
+    dpg.set_item_width("main_home_window", width)
+    dpg.set_item_height("main_home_window", height)
+    
+    # Update button positions
+    dpg.set_item_pos("local_button", [(width / 2) - 60, (height / 2) - 40])
+    dpg.set_item_pos("globel_button", [(width / 2) - 60, (height / 2) + 20])
+    dpg.set_item_pos("swname", [(width / 2)-60, (height / 2) - 180])
+    
+def is_local_home_not_loaded():
+    if dpg.does_item_exist("main_window"):
+        dpg.hide_item("main_home_window")
+        dpg.show_item("main_window")
     else:
-        dpg.hide_item("main_window")
-        receive_file()
+        dpg.hide_item("main_home_window")
+        home()
+    
 
-def call_or_not_send():
-    if dpg.does_item_exist("send_window"):
-        dpg.show_item("send_window")
-    else:
-        dpg.hide_item("main_window")
-        send_file()
-
-def home():
-    if not dpg.does_item_exist("main_window"):
-        with dpg.window(tag="main_window", label="Send your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
-            dpg.add_button(label="Send", tag="sender_button", pos=(0, 0), width=120, height=40,callback=call_or_not_send)
-            dpg.add_button(label="Receive", tag="receiver_button", pos=(0, 0), width=120, height=40, callback=call_or_not)
+def main_home():
+    if not dpg.does_item_exist("main_home_window"):
+        with dpg.window(tag="main_home_window", label="Send your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
+            dpg.add_text("ZENDER",tag="swname",pos=(0,0))
+            dpg.add_button(label="local", tag="local_button", pos=(0, 0), width=120, height=40,callback=is_local_home_not_loaded)
+            dpg.add_button(label="globel", tag="globel_button", pos=(0, 0), width=120, height=40)
 
             # Customize button styles
             with dpg.theme(tag="button_theme"):
@@ -39,19 +40,21 @@ def home():
                     dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255, 255))  # Text color
                     dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)  # Rounded corners
                     dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)  # Padding
-
-            dpg.bind_item_theme("sender_button", "button_theme")
-            dpg.bind_item_theme("receiver_button", "button_theme")
-
-    resize_and_update_buttons()
-    dpg.set_viewport_resize_callback(lambda: resize_and_update_buttons())
-
+                    
+            
+            
+            dpg.bind_item_theme("local_button", "button_theme")
+            dpg.bind_item_theme("globel_button", "button_theme")
+            dpg.bind_item_font("swname",setup())
+    resize()
+    dpg.set_viewport_resize_callback(lambda: resize())
+    
 if __name__ == "__main__":
     dpg.create_context()
-    dpg.create_viewport(title='Appukuttan file transfer', width=800, height=600)
+    dpg.create_viewport(title='ZENDER file transfer', width=800, height=600)
     dpg.setup_dearpygui()
 
-    home()
+    main_home()
 
     dpg.show_viewport()
     dpg.start_dearpygui()

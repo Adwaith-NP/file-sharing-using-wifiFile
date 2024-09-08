@@ -2,8 +2,11 @@ import platform
 from pathlib import Path
 import socket
 import dearpygui.dearpygui as dpg
+import os
 
-
+def base_dir():
+    BASE_DIR = Path(__file__).resolve().parent
+    return BASE_DIR
 
 def get_downloas_dir():
     home_dir = Path.home()
@@ -52,3 +55,4 @@ def resize_and_update_buttons():
     # Update button positions
     dpg.set_item_pos("sender_button", [(width / 2) - 60, (height / 2) - 40])
     dpg.set_item_pos("receiver_button", [(width / 2) - 60, (height / 2) + 20])
+    

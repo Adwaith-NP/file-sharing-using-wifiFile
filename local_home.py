@@ -1,5 +1,5 @@
 import dearpygui.dearpygui as dpg
-from receiver import reciver_thred,receive_file
+from receiver import reciver_thred,receive_file,activate
 from sender import send_file
 from subpart import resize_and_update_buttons
 from font_family.setUpFont import setup
@@ -7,9 +7,8 @@ from font_family.setUpFont import setup
 
 
 def call_or_not():
-    global stop_receiver
     if dpg.does_item_exist("resive_window"):
-        stop_receiver = False
+        activate()
         reciver_thred()
         dpg.show_item("resive_window")
     else:

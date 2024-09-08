@@ -6,6 +6,10 @@ from subpart import get_downloas_dir,getIP,resize_and_update_buttons
 
 stop_receiver = False
 
+def activate():
+    global stop_receiver
+    stop_receiver = False
+
 def receiver(host, port):
         global stop_receiver
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,6 +19,7 @@ def receiver(host, port):
 
         while not stop_receiver:
             try:
+                monitor()
                 dpg.hide_item("ip_of_sender")
                 dpg.hide_item("download_info")
                 dpg.show_item("notifier")
@@ -40,6 +45,7 @@ def receiver(host, port):
                 
                 
                 with open(file_name, 'wb') as file:
+                    server_socket.settimeout(20) ## new added chekit out
                     while not stop_receiver:
                         data = client_socket.recv(1024)
                         if not data:
@@ -60,12 +66,31 @@ def receiver(host, port):
                 dpg.set_value("notifier", " An error occurred")
                 break
         server_socket.close()
+        return
 
 def reciver_thred():
     host = '0.0.0.0'
-    port = 12345 
+    port = 12345
     threading.Thread(target=receiver, args=(host, port)).start()
 
+def monitor():
+    ip = getIP()
+    if not ip:
+        is_connection_established()
+
+def is_connection_established():
+    ip = getIP()
+    global stop_receiver
+    if ip:
+        dpg.set_value("ip_address",f"IP : {ip}")
+        dpg.hide_item("refresh")
+        stop_receiver = False
+        reciver_thred()
+    else:
+        dpg.set_value("ip_address","Connection not established")
+        dpg.show_item("refresh")
+        stop_receiver = True
+        
 
 ## receive page settings
 def receive_file():
@@ -91,17 +116,23 @@ def receive_file():
         
     if not dpg.does_item_exist("resive_window"):
         with dpg.window(tag="resive_window", label="Receive your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
-            ip = getIP()
-            if not ip:
-                dpg.add_text("Connect to a wifi and restart the application", wrap=280, tag="ip_address", pos=(20, 80))
-            else:
-                dpg.add_text(f"Your IP: {ip}", wrap=280, tag="ip_address", pos=(20, 80))
-            dpg.add_button(label="Back", tag="back_button", pos=(20, 20), width=120, height=40 ,callback=show_main_window)
-            dpg.add_text("connect and restart...", wrap=280, tag="notifier", pos=(0, 0))
+            dpg.add_text("", wrap=280, tag="ip_address", pos=(20, 80))
+            dpg.add_button(label="Back", tag="back_button", pos=(20, 20), width=120, height=40 ,callback=show_main_window) 
+            dpg.add_button(label="Refresh", tag="refresh", pos=(250,70), width=120, height=40 ,callback=is_connection_established) 
+            dpg.add_text("connect and refresh...", wrap=280, tag="notifier", pos=(0, 0))
             dpg.bind_item_theme("back_button", "button_theme")
+            dpg.bind_item_theme("refresh", "button_theme")
             
             dpg.add_text("",tag="ip_of_sender")
             dpg.add_text("",tag="download_info")
+    
+    ip = getIP()
+    if not ip:
+        dpg.set_value("ip_address","Connection not established")
+    else:
+        dpg.set_value("ip_address",f"IP : {ip}")
+        dpg.hide_item("refresh")
+        
             
               
         
@@ -112,6 +143,6 @@ def receive_file():
     dpg.hide_item("ip_of_sender")
     dpg.hide_item("download_info")
     
-    
-    reciver_thred()
+    if ip:
+        reciver_thred()
     

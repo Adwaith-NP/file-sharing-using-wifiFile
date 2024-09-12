@@ -44,15 +44,3 @@ def getIP():
             return local_ip
         return False
     
-def resize_and_update_buttons():
-    # Get the current viewport width and height
-    width, height = dpg.get_viewport_width(), dpg.get_viewport_height()
-    
-    # Resize the window to match the viewport size
-    dpg.set_item_width("main_window", width)
-    dpg.set_item_height("main_window", height)
-    
-    # Update button positions
-    dpg.set_item_pos("sender_button", [(width / 2) - 60, (height / 2) - 40])
-    dpg.set_item_pos("receiver_button", [(width / 2) - 60, (height / 2) + 20])
-    

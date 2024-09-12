@@ -1,8 +1,9 @@
-import subprocess
 import dearpygui.dearpygui as dpg
 import threading
 import socket
-from subpart import get_downloas_dir,getIP,resize_and_update_buttons
+from subpart import get_downloas_dir,getIP
+from resizeSetUp import local_home_recize,recevierResize
+from font_family.setUpFont import setup
 
 stop_receiver = False
 
@@ -82,7 +83,7 @@ def is_connection_established():
     ip = getIP()
     global stop_receiver
     if ip:
-        dpg.set_value("ip_address",f"IP : {ip}")
+        dpg.set_value("ip_address",f"Code : {ip.split('.')[-1]}")
         dpg.hide_item("refresh")
         stop_receiver = False
         reciver_thred()
@@ -99,29 +100,20 @@ def receive_file():
         stop_receiver = True
         dpg.hide_item("resive_window")
         dpg.show_item("main_window")
-        resize_and_update_buttons()
-        dpg.set_viewport_resize_callback(lambda: resize_and_update_buttons())
-        
-        
-        
-    def resize():
-        width, height = dpg.get_viewport_width(), dpg.get_viewport_height()
-        dpg.set_item_width("resive_window", width)
-        dpg.set_item_height("resive_window", height)
-        dpg.set_item_pos("notifier", [(width / 2) - 80, (height / 2) - 40])
-        
-        dpg.set_item_pos("ip_of_sender", [(width / 2) - 80, (height / 2) - 40])
-        dpg.set_item_pos("download_info", [(width / 2) - 80, (height / 2)-20])
+        local_home_recize()
+        dpg.set_viewport_resize_callback(lambda: local_home_recize())
         
         
     if not dpg.does_item_exist("resive_window"):
         with dpg.window(tag="resive_window", label="Receive your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
             dpg.add_text("", wrap=280, tag="ip_address", pos=(20, 80))
             dpg.add_button(label="Back", tag="back_button", pos=(20, 20), width=120, height=40 ,callback=show_main_window) 
-            dpg.add_button(label="Refresh", tag="refresh", pos=(250,70), width=120, height=40 ,callback=is_connection_established) 
+            dpg.add_button(label="Refresh", tag="refresh", pos=(300,75), width=120, height=40 ,callback=is_connection_established) 
             dpg.add_text("connect and refresh...", wrap=280, tag="notifier", pos=(0, 0))
             dpg.bind_item_theme("back_button", "button_theme")
             dpg.bind_item_theme("refresh", "button_theme")
+            dpg.bind_item_font("ip_address",setup("M"))
+            dpg.bind_item_font("notifier",setup("M"))
             
             dpg.add_text("",tag="ip_of_sender")
             dpg.add_text("",tag="download_info")
@@ -130,14 +122,14 @@ def receive_file():
     if not ip:
         dpg.set_value("ip_address","Connection not established")
     else:
-        dpg.set_value("ip_address",f"IP : {ip}")
+        dpg.set_value("ip_address",f"Code : {ip.split('.')[-1]}")
         dpg.hide_item("refresh")
         
             
               
         
-    resize()
-    dpg.set_viewport_resize_callback(lambda: resize())
+    recevierResize()
+    dpg.set_viewport_resize_callback(lambda: recevierResize())
     dpg.show_item("resive_window")
     dpg.hide_item("main_window")
     dpg.hide_item("ip_of_sender")

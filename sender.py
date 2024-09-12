@@ -4,8 +4,9 @@ import os
 import time
 import socket
 import threading
-
-from subpart import resize_and_update_buttons,getIP
+from subpart import getIP
+from resizeSetUp import local_home_recize,Sender_resize
+from font_family.setUpFont import setup
 
 stop_searching = False
 
@@ -28,8 +29,8 @@ def send_file():
     def show_main_window_for_send():
         dpg.hide_item("send_window")
         dpg.show_item("main_window")
-        resize_and_update_buttons()
-        dpg.set_viewport_resize_callback(lambda: resize_and_update_buttons())
+        local_home_recize()
+        dpg.set_viewport_resize_callback(lambda: local_home_recize())
     
     def sender(server_host,server_port,file_path):
         global stop_searching
@@ -107,7 +108,13 @@ def send_file():
             dpg.set_value("path_text", stdout_output) 
             
     def send():
+        device_ip = getIP()
+        if device_ip:
+            cut_ip = ".".join(device_ip.split('.')[:-1])+"."
+        else:
+            cut_ip = "" ## remove after debugging
         ip_value = dpg.get_value("ip_input")
+        ip_value = cut_ip + ip_value
         port = 12345
         path_value = dpg.get_value("path_text")
         if ip_value == "":
@@ -121,40 +128,37 @@ def send_file():
             dpg.show_item("upload_info")
             threading.Thread(target=sender, args=(ip_value, port,path_value)).start()
         
-    def resize():
-        width, height = dpg.get_viewport_width(), dpg.get_viewport_height()
-        dpg.set_item_width("send_window", width)
-        dpg.set_item_height("send_window", height)
-        dpg.set_item_pos("upload_info",[(width/2)-70, (height / 2)-100])
-        dpg.set_item_pos("ip_text", [(width/2)-210, (height / 2) - 40])
-        dpg.set_item_pos("ip_input", [(width/2)-60, (height / 2) - 40])
-        dpg.set_item_pos("file_path",[(width/2)-210, (height / 2) + 10])
-        dpg.set_item_pos("brows_file",[(width/2)+110, (height / 2) + 10])
-        dpg.set_item_pos("sed_button",[(width/2)-210, (height / 2) + 60])
-        
     if not dpg.does_item_exist("send_window"):
-        device_ip = getIP()
-        if device_ip:
-            cut_ip = ".".join(device_ip.split('.')[:-1])+"."
-        else:
-            cut_ip = ""
         with dpg.window(tag="send_window",label="send the file",pos=(0,0),no_title_bar=True,no_resize=True,no_move=True):
             dpg.add_text("",tag="warning",pos=(25,90))
             dpg.add_text("",tag="upload_info")
             dpg.add_button(label="back",tag="back_to_main",width=120, height=40,pos=(20, 20),callback=show_main_window_for_send)
             dpg.add_button(label="stop",tag="stop_button",width=120, height=40,pos=(20, 20),callback=stop_uploading_of_serching)
-            dpg.add_text("enter ip of receiver",tag="ip_text",pos=(20,60))
-            dpg.add_input_text(tag="ip_input",default_value=cut_ip,pos=(80,60),width=290)
+            dpg.add_text("Enter the code",tag="ip_text",pos=(20,60))
+            dpg.add_input_text(tag="ip_input",pos=(80,60),width=290)
             dpg.add_button(label="send",tag="sed_button",width=440, height=40,callback=send)
             dpg.add_button(label="Browse",tag="brows_file",width=120, height=35,callback=file_selection_fun)
             dpg.bind_item_theme("back_to_main", "button_theme")
             dpg.bind_item_theme("sed_button", "button_theme")
             dpg.bind_item_theme("brows_file", "button_theme")
             dpg.bind_item_theme("stop_button", "button_theme")
+            dpg.bind_item_font("ip_text",setup("S"))
+            
+            with dpg.theme(tag="input_theme"):
+                with dpg.theme_component(dpg.mvInputText):
+                    dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (30, 30, 30))   # Background color
+                    dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255))    # Text color
+                    dpg.add_theme_color(dpg.mvThemeCol_Border, (100, 100, 100))  # Border color
+                    dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)         # Rounded corners
+                    dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)
+                    
+            dpg.bind_item_theme("ip_input","input_theme")
+            dpg.bind_item_font("ip_input",setup("S"))
+            
             with dpg.child_window(tag="file_path",pos=(0,0),width=300,height=35):
-                dpg.add_text("             choos a file",tag="path_text")
-        resize()
-        dpg.set_viewport_resize_callback(lambda: resize())
+                dpg.add_text("             choose a file",tag="path_text")
+        Sender_resize()
+        dpg.set_viewport_resize_callback(lambda: Sender_resize())
         dpg.show_item("send_window")
         dpg.hide_item("main_window")
         dpg.hide_item("stop_button")

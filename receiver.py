@@ -6,6 +6,7 @@ from resizeSetUp import local_home_recize,recevierResize
 from font_family.setUpFont import setup
 
 stop_receiver = False
+local_ip = '120.0.0.1'
 
 def activate():
     global stop_receiver
@@ -17,7 +18,7 @@ def receiver(host, port):
         server_socket.bind((host, port))
         server_socket.listen(1)
         
-
+        
         while not stop_receiver:
             try:
                 monitor()
@@ -76,13 +77,13 @@ def reciver_thred():
 
 def monitor():
     ip = getIP()
-    if not ip:
+    if not ip or ip == local_ip:
         is_connection_established()
 
 def is_connection_established():
     ip = getIP()
     global stop_receiver
-    if ip:
+    if ip and ip != local_ip:
         dpg.set_value("ip_address",f"Code : {ip.split('.')[-1]}")
         dpg.hide_item("refresh")
         stop_receiver = False
@@ -119,7 +120,7 @@ def receive_file():
             dpg.add_text("",tag="download_info")
     
     ip = getIP()
-    if not ip:
+    if not ip or ip == local_ip:
         dpg.set_value("ip_address","Connection not established")
     else:
         dpg.set_value("ip_address",f"Code : {ip.split('.')[-1]}")
@@ -135,6 +136,6 @@ def receive_file():
     dpg.hide_item("ip_of_sender")
     dpg.hide_item("download_info")
     
-    if ip:
+    if ip and ip != local_ip:
         reciver_thred()
     

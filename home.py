@@ -2,6 +2,9 @@ import dearpygui.dearpygui as dpg
 from local_home import home
 from font_family.setUpFont import setup
 from resizeSetUp import HomeResize,local_home_recize
+from globalSharing.login import login
+from globalSharing.signUp import signUp
+from globalSharing.global_home import gl_home
     
 def is_local_home_not_loaded():
     if dpg.does_item_exist("main_window"):
@@ -19,7 +22,7 @@ def main_home():
         with dpg.window(tag="main_home_window", label="Send your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
             dpg.add_text("ZENDER",tag="swname",pos=(0,0))
             dpg.add_button(label="local", tag="local_button", pos=(0, 0), width=120, height=40,callback=is_local_home_not_loaded)
-            dpg.add_button(label="global", tag="globel_button", pos=(0, 0), width=120, height=40)
+            dpg.add_button(label="global", tag="globel_button", pos=(0, 0), width=120, height=40,callback=gl_home)
 
             # Customize button styles
             with dpg.theme(tag="button_theme"):
@@ -30,6 +33,14 @@ def main_home():
                     dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255, 255))  # Text color
                     dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)  # Rounded corners
                     dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)  # Padding
+                    
+            with dpg.theme(tag="input_theme"):
+                with dpg.theme_component(dpg.mvInputText):
+                    dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (30, 30, 30))   # Background color
+                    dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255))    # Text color
+                    dpg.add_theme_color(dpg.mvThemeCol_Border, (100, 100, 100))  # Border color
+                    dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)         # Rounded corners
+                    dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)
                     
             
             

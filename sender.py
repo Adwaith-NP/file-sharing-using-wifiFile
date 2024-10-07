@@ -55,7 +55,8 @@ def send_file():
                     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     client_socket.settimeout(1.0)
                     client_socket.connect((server_host, server_port))
-                except socket.error:
+                except socket.error as e:
+                    print(e)
                     continue
                 
                 dpg.set_value("warning","")
@@ -113,11 +114,11 @@ def send_file():
             cut_ip = ".".join(device_ip.split('.')[:-1])+"."
         else:
             cut_ip = "" ## remove after debugging
-        ip_value = dpg.get_value("ip_input")
-        ip_value = cut_ip + ip_value
+        ip_value_in = dpg.get_value("ip_input")
+        ip_value = cut_ip + ip_value_in
         port = 12345
         path_value = dpg.get_value("path_text")
-        if ip_value == "":
+        if ip_value_in == "":
             dpg.set_value("warning","Warning : Add IP")
         elif path_value == "             choos a file":
             dpg.set_value("warning","Warning : Add a file")
@@ -143,14 +144,6 @@ def send_file():
             dpg.bind_item_theme("brows_file", "button_theme")
             dpg.bind_item_theme("stop_button", "button_theme")
             dpg.bind_item_font("ip_text",setup("S"))
-            
-            with dpg.theme(tag="input_theme"):
-                with dpg.theme_component(dpg.mvInputText):
-                    dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (30, 30, 30))   # Background color
-                    dpg.add_theme_color(dpg.mvThemeCol_Text, (255, 255, 255))    # Text color
-                    dpg.add_theme_color(dpg.mvThemeCol_Border, (100, 100, 100))  # Border color
-                    dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)         # Rounded corners
-                    dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)
                     
             dpg.bind_item_theme("ip_input","input_theme")
             dpg.bind_item_font("ip_input",setup("S"))

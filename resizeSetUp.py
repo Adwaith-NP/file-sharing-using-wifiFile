@@ -80,3 +80,21 @@ def globel_home_recize():
     dpg.set_item_pos("gb_sender_button", [(width / 2) - 60, (height / 2) - 40])
     dpg.set_item_pos("gb_receiver_button", [(width / 2) - 60, (height / 2) + 20])
     dpg.set_item_pos("gb_local_heading", [(width / 2)-110, (height / 2) - 180])
+    
+def globel_sender_recize():
+    size = set_window_size("gl_send_window")
+    width,height= size[0],size[1]
+    dpg.set_item_pos("gl_sender_", [(width / 2) - 90, (height / 2) - 250])
+    dpg.set_item_pos("username", [(width/2)-210, (height / 2) - 40])
+    dpg.set_item_pos("sd_filename", [(width/2)-210, (height / 2) + 10])
+    dpg.set_item_pos("gl_file_path",[(width/2)-210, (height / 2) + 60])
+    dpg.set_item_pos("gl_file_browse",[(width/2)+110, (height / 2) + 60])
+    dpg.set_item_pos("gl_send_button",[(width/2)-210, (height / 2) + 110])
+    
+def globel_inbox_recize():
+    size = set_window_size("gl_inbox_window")
+    width,height= size[0],size[1]
+    dpg.set_item_pos("inbot_txt", [(width / 2) - 40, (height / 2) - 250])
+    dpg.set_item_pos("inbox_sd_bt", [(width / 2) + 30, (height / 2) - 150])
+    dpg.set_item_pos("inbox_sd_re", [(width / 2) - 130, (height / 2) - 150])
+    dpg.set_item_pos("ibox_child_window", [(width / 2) - 395, (height / 2) - 50])

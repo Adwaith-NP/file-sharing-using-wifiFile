@@ -42,6 +42,7 @@ def main_home():
                     dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5)         # Rounded corners
                     dpg.add_theme_style(dpg.mvStyleVar_FramePadding, 10, 10)
                     
+                    
             
             
             dpg.bind_item_theme("local_button", "button_theme")
@@ -52,7 +53,7 @@ def main_home():
     
 if __name__ == "__main__":
     dpg.create_context()
-    dpg.create_viewport(title='ZENDER file transfer', width=800, height=600)
+    dpg.create_viewport(title='ZENDER file transfer', width=850, height=600)
     dpg.setup_dearpygui()
 
     main_home()

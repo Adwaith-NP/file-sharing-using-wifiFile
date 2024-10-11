@@ -1,7 +1,7 @@
 import dearpygui.dearpygui as dpg
 from local_home import home
 from font_family.setUpFont import setup
-from resizeSetUp import HomeResize,local_home_recize
+from resizeSetUp import HomeResize,local_home_recize,loginResizer
 from globalSharing.login import login
 from globalSharing.signUp import signUp
 from globalSharing.global_home import gl_home
@@ -15,6 +15,16 @@ def is_local_home_not_loaded():
     else:
         dpg.hide_item("main_home_window")
         home()
+        
+def is_auth():
+    if dpg.does_item_exist("login_window"):
+        dpg.hide_item("main_home_window")
+        dpg.show_item("login_window")
+        loginResizer()
+        dpg.set_viewport_resize_callback(lambda:loginResizer())
+    else:
+        dpg.hide_item("main_home_window")
+        login()
     
 
 def main_home():
@@ -22,7 +32,7 @@ def main_home():
         with dpg.window(tag="main_home_window", label="Send your file", pos=(0, 0), no_title_bar=True, no_resize=True, no_move=True):
             dpg.add_text("ZENDER",tag="swname",pos=(0,0))
             dpg.add_button(label="local", tag="local_button", pos=(0, 0), width=120, height=40,callback=is_local_home_not_loaded)
-            dpg.add_button(label="global", tag="globel_button", pos=(0, 0), width=120, height=40,callback=gl_home)
+            dpg.add_button(label="global", tag="globel_button", pos=(0, 0), width=120, height=40,callback=is_auth)
 
             # Customize button styles
             with dpg.theme(tag="button_theme"):

@@ -14,7 +14,7 @@ def gl_sender():
             with dpg.window(tag="gl_send_window",label="send the file",pos=(0,0),no_title_bar=True,no_resize=True,no_move=True):
                 dpg.add_text("Global Sender",tag="gl_sender_")
                 dpg.add_input_text(hint="Username",tag="username",width=440)
-                dpg.add_input_text(hint="File info",tag="sd_filename",width=440)
+                dpg.add_input_text(hint="File info (eg : example.exe)",tag="sd_filename",width=440)
                 dpg.add_button(label="Browse",tag="gl_file_browse",width=120, height=35)
                 dpg.add_button(label="Send",tag="gl_send_button",width=440, height=40)
                 dpg.add_button(label="Back",tag="gl_sd_back_to_main_home",width=120, height=40,pos=(20, 20),callback=back_to_global_home)

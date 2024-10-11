@@ -49,11 +49,12 @@ def loginResizer():
         size = set_window_size("login_window")
         width,height= size[0],size[1]
         
+        dpg.set_item_pos("loginTag", [(width / 2) - 40, (height / 2) - 180])
+        dpg.set_item_pos("login_message", [(width / 2) + 70, (height / 2) - 260])
         dpg.set_item_pos("username", [(width / 2) - 150, (height / 2) - 80])
         dpg.set_item_pos("password", [(width / 2) - 150, (height / 2) - 30])
         dpg.set_item_pos("remember", [(width / 2) - 150, (height / 2) + 20])
         dpg.set_item_pos("loginButton", [(width / 2) - 150, (height / 2) + 50])
-        dpg.set_item_pos("loginTag", [(width / 2) - 40, (height / 2) - 180])
         dpg.set_item_pos("signUp_info", [(width / 2) - 150, (height / 2) + 130])
         dpg.set_item_pos("signUpButton", [(width / 2) + 45, (height / 2) + 120])
         

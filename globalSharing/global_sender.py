@@ -13,7 +13,7 @@ def gl_sender():
     if not dpg.does_item_exist("gl_send_window"):
             with dpg.window(tag="gl_send_window",label="send the file",pos=(0,0),no_title_bar=True,no_resize=True,no_move=True):
                 dpg.add_text("Global Sender",tag="gl_sender_")
-                dpg.add_input_text(hint="Username",tag="username",width=440)
+                dpg.add_input_text(hint="Username",tag="gl_send_username",width=440)
                 dpg.add_input_text(hint="File info (eg : example.exe)",tag="sd_filename",width=440)
                 dpg.add_button(label="Browse",tag="gl_file_browse",width=120, height=35)
                 dpg.add_button(label="Send",tag="gl_send_button",width=440, height=40)
@@ -26,8 +26,8 @@ def gl_sender():
                 
                 dpg.bind_item_theme("sd_filename","input_theme")
                 dpg.bind_item_font("sd_filename",setup("S"))
-                dpg.bind_item_theme("username","input_theme")
-                dpg.bind_item_font("username",setup("S"))
+                dpg.bind_item_theme("gl_send_username","input_theme")
+                dpg.bind_item_font("gl_send_username",setup("S"))
                 dpg.bind_item_font("gl_sender_",setup("L"))
                 
                 with dpg.child_window(tag="gl_file_path",pos=(0,0),width=300,height=35):

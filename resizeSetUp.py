@@ -86,7 +86,7 @@ def globel_sender_recize():
     size = set_window_size("gl_send_window")
     width,height= size[0],size[1]
     dpg.set_item_pos("gl_sender_", [(width / 2) - 90, (height / 2) - 250])
-    dpg.set_item_pos("username", [(width/2)-210, (height / 2) - 40])
+    dpg.set_item_pos("gl_send_username", [(width/2)-210, (height / 2) - 40])
     dpg.set_item_pos("sd_filename", [(width/2)-210, (height / 2) + 10])
     dpg.set_item_pos("gl_file_path",[(width/2)-210, (height / 2) + 60])
     dpg.set_item_pos("gl_file_browse",[(width/2)+110, (height / 2) + 60])

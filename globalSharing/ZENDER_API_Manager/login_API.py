@@ -1,5 +1,4 @@
 import requests
-
 csrftoken = None
 csrftoken_url = "http://127.0.0.1:8000/ZENDER-API/getCsrfToken/"
 authentication_url = "http://127.0.0.1:8000/ZENDER-API/authentication/"

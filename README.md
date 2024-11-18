@@ -1,3 +1,5 @@
+global shering on development 
+
 # File Transfer using Local WiFi with TCP,GUI
 
 This Python project enables file transfer between devices over a local WiFi network using the TCP protocol.
